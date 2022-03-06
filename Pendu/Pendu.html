@@ -1,0 +1,336 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta chaset="UTF-8">
+</head>
+
+<body>
+    <div id="loading" class="">
+        <div class="loader">
+            <p>Chargement en cours...</p>
+        </div>
+    </div>
+
+    <!--timer-->
+
+    <div id="timer"></div>
+
+    <!--Titre-->
+    <h1>Jeu du pendu</h1>
+    <div class="chrono"><img src="Images/Chrono.png"></div>
+    <div class="page">
+        <!--Message de défaite si le temps est écoulé ou si le nombre de tentatives à été atteint-->
+        <div class="Perdu">
+            <p id="go">Game over</p>
+        </div>
+        <!--Message si le joueur à trouvé le mot-->
+        <div class="gagne">
+            <p id="gg">Bravo tu as gagne</p>
+        </div>
+
+
+        <div class="clavier">
+            <!-- Je créé une première ligne pour mon clavier-->
+            <div class="Ligne1" id="Ligne1">
+                <h2>Entrer une lettre :</h2>
+                <div class="mot_pendu" id="mot_pendu-container"><span id="mot"></span></div>
+                <!--Affiche des lettres sous forme de bouton avec une class "letter", une valeur précise qui correpond à chaque lettre et une instruction au click -->
+                <button class="letter" value="65" onclick="affichage('A',this)">A</button>
+                <button class="letter" value="66" onclick="affichage('B',this)">B</button>
+                <button class="letter" value="67" onclick="affichage('C',this)">C</button>
+                <button class="letter" value="68" onclick="affichage('D',this)">D</button>
+                <button class="letter" value="69" onclick="affichage('E',this)">E</button>
+                <button class="letter" value="70" onclick="affichage('F',this)">F</button>
+                <button class="letter" value="71" onclick="affichage('G',this)">G</button>
+                <button class="letter" value="72" onclick="affichage('H',this)">H</button>
+                <button class="letter" value="73" onclick="affichage('I',this)">I</button>
+                <button class="letter" value="74" onclick="affichage('J',this)">J</button>
+                <button class="letter" value="75" onclick="affichage('K',this)">K</button>
+            </div>
+            <!-- Je créé une deuxième ligne pour mon clavier-->
+            <div class="Ligne2" id="Ligne2">
+                <button class="letter" value="76" onclick="affichage('L',this)">L</button>
+                <button class="letter" value="77" onclick="affichage('M',this)">M</button>
+                <button class="letter" value="78" onclick="affichage('N',this)">N</button>
+                <button class="letter" value="79" onclick="affichage('O',this)">O</button>
+                <button class="letter" value="80" onclick="affichage('P',this)">P</button>
+                <button class="letter" value="81" onclick="affichage('Q',this)">Q</button>
+                <button class="letter" value="82" onclick="affichage('R',this)">R</button>
+                <button class="letter" value="83" onclick="affichage('S',this)">S</button>
+                <button class="letter" value="84" onclick="affichage('T',this)">T</button>
+                <button class="letter" value="85" onclick="affichage('U',this)">U</button>
+                <button class="letter" value="86" onclick="affichage('V',this)">V</button>
+                <button class="letter" value="87" onclick="affichage('W',this)">W</button>
+                <button class="letter" value="88" onclick="affichage('X',this)">X</button>
+                <button class="letter" value="89" onclick="affichage('Y',this)">Y</button>
+                <button class="letter" value="90" onclick="affichage('Z',this)">Z</button>
+            </div>
+            <!--
+            Je créé un bouton qui lors du click déclanche la fonction getRandomWord() et appear(). 
+            La fonction getRandomWord permet de changer le mot afficher sous forme de "_". 
+            La fonction appear() permet de faire apparaitre à nouveau le clavier et de faire disparaitre le message gagné ou perdu
+            -->
+            <div class="New">
+                <button id="bouton" class="btn btn-3" onclick="getRandomWord(); appear()">Nouvelle partie</button>
+            </div>
+
+        </div>
+        <div class="image">
+            <img id="a1" alt="pendu" src="Images/1.png" />
+            <img id="a2" alt="pendu" src="Images/2.png" />
+            <img id="a3" alt="pendu" src="Images/3.png" />
+            <img id="a4" alt="pendu" src="Images/4.png" />
+            <img id="a5" alt="pendu" src="Images/5.png" />
+            <img id="a6" alt="pendu" src="Images/6.png" />
+            <img id="a7" alt="pendu" src="Images/7.png" />
+            <img id="a8" alt="pendu" src="Images/8.png" />
+            <img id="a9" alt="pendu" src="Images/9.png" />
+            <img id="a10" alt="pendu" src="Images/10.png" />
+        </div>
+    </div>
+    <script language="javascript" type="text/javascript">
+        //un event sur "domContentLoaded" plutot qu'un time out 
+
+        function affichage_hidden_lettre(motAdeviner) {
+
+            // Condition : la condition qui tant qu'elle est vrai, la boucle for va continuer de se faire 
+
+            // Je récupère la div qui va contenir les lettres 
+            var motAdeviner_container = document.querySelector('#mot_pendu-container');
+            motAdeviner_container.innerHTML = "";
+            for (let i = 0; i < motAdeviner.length; i++) {
+
+                // Je crée une nouvelle balise 'span'
+                new_lettre = document.createElement('span');
+                // Je lui ajoute une class "lettre" 
+                new_lettre.classList.add('lettre')
+                    // Je lui set un atribute id 
+                new_lettre.setAttribute('id', ('lettre-' + i));
+                new_lettre.setAttribute('lettre', motAdeviner[i]);
+
+                // Je met dans la balise span un tiret "_"
+                new_lettre.innerHTML = '_';
+                motAdeviner_container.appendChild(new_lettre);
+            }
+        }
+
+
+        var compteur = 0;
+
+        function affichage(lettre, e) {
+
+            if (e) {
+                // Je mets une couleur au contour des boutons déjà utilisés
+                e.style.border = "3px solid #2D479E";
+
+            }
+
+            bonnesLettres = document.querySelectorAll("span[lettre='" + lettre + "']") //span[lettre='a'] { }
+            bonnesLettres.forEach(span => {
+                span.innerHTML = span.getAttribute("lettre")
+            });
+            gagne = true;
+            document.querySelectorAll(".lettre").forEach(function(letter) {
+                console.log(letter.innerHTML)
+                if (letter.innerHTML == "_") {
+                    gagne = false;
+                }
+            });
+            console.log(gagne)
+            if (gagne == false) {
+                document.getElementById('gg').style.display = "none";
+            } else {
+                document.getElementById('gg').style.display = "block";
+                document.getElementById('timer').style.display = "none";
+                document.getElementById('Ligne1').style.display = "none";
+                document.getElementById('Ligne2').style.display = "none";
+                document.querySelectorAll('.image img').forEach(function(img) {
+                    img.style.display = "none";
+                })
+            }
+
+            if (bonnesLettres.length === 0) {
+                compteur = compteur + 1
+
+                if (compteur === 1) {
+                    document.querySelector("img#a1").style.display = "block"; // L'image n°1 s'affiche grâce au display : flex
+                }
+                if (compteur === 2) {
+                    document.querySelector("img#a1").style.display = "none"; // L'image n°2 disparait grâce au display : none par laisser place à l'image n°2
+                    document.querySelector("img#a2").style.display = "block";
+                }
+                if (compteur === 3) {
+                    document.querySelector("img#a2").style.display = "none";
+                    document.querySelector("img#a3").style.display = "block";
+                }
+                if (compteur === 4) {
+                    document.querySelector("img#a3").style.display = "none";
+                    document.querySelector("img#a4").style.display = "block";
+                }
+                if (compteur === 5) {
+                    document.querySelector("img#a4").style.display = "none";
+                    document.querySelector("img#a5").style.display = "block";
+                }
+                if (compteur === 6) {
+                    document.querySelector("img#a5").style.display = "none";
+                    document.querySelector("img#a6").style.display = "block";
+                }
+                if (compteur === 7) {
+                    document.querySelector("img#a6").style.display = "none";
+                    document.querySelector("img#a7").style.display = "block";
+                }
+                if (compteur === 8) {
+                    document.querySelector("img#a7").style.display = "none";
+                    document.querySelector("img#a8").style.display = "block";
+                }
+
+                if (compteur === 9) {
+                    document.querySelector("img#a8").style.display = "none";
+                    document.querySelector("img#a9").style.display = "block";
+                }
+                if (compteur === 10) {
+                    temps = 0;
+                    document.querySelector("img#a9").style.display = "none";
+                    document.querySelector("img#a10").style.display = "block";
+
+                    setTimeout(function() {
+                        document.querySelector("img#a10").style.display = "none";
+                        document.querySelector("#go").style.display = "block";
+
+                    }, 2000)
+                }
+
+            }
+        }
+
+        this.getRandomWord()
+
+        // Bouton nouvelle partie 
+
+        document.getElementById("bouton").addEventListener("click", function() {
+            //mot_pendu - container = 0;
+            document.querySelectorAll(".clavier .letter").forEach(function(letter) {
+                letter.style.border = "";
+            });
+
+            compteur = 0;
+            document.querySelectorAll('.image img').forEach(function(img) {
+                img.style.display = "none";
+            });
+
+
+
+        });
+        // Fonction pour changer le mot
+        function getRandomWord() {
+            fetch('https://sylvainpellier.ovh/mds/api_mots.php') // appelle l'API
+                .then(function(result) {
+                    result.json().then(function(result) {
+                        console.log(result.word)
+                        this.showWord(result.word);
+                    })
+                });
+        }
+
+        function showWord(word) {
+            //document.querySelector('#mot').innerHTML = word;
+
+            affichage_hidden_lettre(word.toUpperCase());
+
+            document.getElementById('loading').classList.add('hide') // Ecran de chargement
+        }
+
+        document.addEventListener("keyup", (event) => {
+            //affichage(event.key.toUpperCase())
+            console.log(String.fromCharCode(event.keyCode));
+            let toucheCorrespante = document.querySelector("button[value='" + event.keyCode + "']")
+            if (toucheCorrespante) toucheCorrespante.click();
+
+
+        });
+
+        let Timing;
+
+        function showWord(word) {
+
+
+            //document.querySelector('#mot').innerHTML = word;
+            Timing = setInterval(diminuerTemps, 1000)
+            affichage_hidden_lettre(word.toUpperCase());
+
+            document.getElementById('loading').classList.add('hide') // Ecran de chargement
+        }
+
+        //J'attribu un nombre à chaque lettre (Keycode) 
+        KEY_A = 65;
+        KEY_B = 66;
+        KEY_C = 67;
+        KEY_D = 68;
+        KEY_E = 69;
+        KEY_F = 70;
+        KEY_G = 71;
+        KEY_H = 72;
+        KEY_I = 73;
+        KEY_J = 74;
+        KEY_K = 75;
+        KEY_L = 76;
+        KEY_M = 77;
+        KEY_N = 78;
+        KEY_O = 79;
+        KEY_P = 80;
+        KEY_Q = 81;
+        KEY_R = 82;
+        KEY_S = 83;
+        KEY_T = 84;
+        KEY_U = 85;
+        KEY_V = 86;
+        KEY_W = 87;
+        KEY_X = 88;
+        KEY_Y = 89;
+        KEY_Z = 90;
+
+        /* timer */
+
+        var temps = 60
+        const timerElement = document.getElementById("timer")
+
+        function diminuerTemps() {
+            let secondes = parseInt(temps % 61, 10); //Calcul pour diminuer le temps
+            temps = temps < 0 ? 0 : temps - 1;
+
+
+            console.log(temps); // affichage du temps restant dans la console
+
+            timerElement.innerText = "temps restant : " + secondes // affichage du temps restant
+
+
+            if (temps >= 60) {
+                document.getElementById('timer').style.display = 'none';
+            } else if (temps <= 0) {
+                clearInterval(Timing);
+                temps = 60;
+                setTimeout(function() {
+                    document.getElementById('timer').style.display = 'none';
+                    document.getElementById('go').style.display = 'block'; // affiche le message de défaite
+                    document.getElementById('Ligne1').style.display = 'none'; // la ligne 1 disparait
+                    document.getElementById('Ligne2').style.display = 'none'; // la ligne 1 disparait
+
+                }, 2000)
+            } else {
+                document.getElementById('timer').style.display = 'flex'; // affiche le temps restant
+            }
+        }
+        document.getElementById('gg').style.display = "none"; // Le message disparait 
+
+
+        function appear() {
+            document.getElementById('go').style.display = 'none'; // go disparait
+            document.getElementById('gg').style.display = 'none'; // gg disparait
+            document.getElementById('Ligne1').style.display = 'block'; // la ligne 1 s'affiche
+            document.getElementById('Ligne2').style.display = 'block'; // la ligne 2 s'affiche
+        }
+    </script>
+</body>
+
+</html>

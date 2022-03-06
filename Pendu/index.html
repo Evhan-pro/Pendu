@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            background-image: url('Images/fond.png');
+            background-position: cover;
+            color: white;
+            font-size: 40px;
+            padding-top: 10%;
+        }
+        
+        #commencer {
+            display: none
+        }
+        
+        #erreur {
+            display: none
+        }
+        
+        form {
+            text-align: center;
+        }
+        
+        input[type="text"] {
+            background: transparent;
+            border: 2px solid white;
+            border-radius: 15px;
+            padding: 5px;
+            color: white;
+        }
+        
+        button {
+            border-radius: 15px;
+            font-size: 25px;
+        }
+        
+        .align {
+            display: grid;
+            place-items: center;
+        }
+        
+        .icon {
+            font-size: 2rem;
+        }
+        
+        .champs {
+            position: relative;
+        }
+        
+        .champs .icon {
+            position: absolute;
+            right: 1em;
+            top: 50%;
+            transform: translateY(-50%)
+        }
+        
+        .pseudo {
+            border-radius: 0.25em;
+            border-style: solid;
+            border-width: 2px;
+            font-size: 1.5rem;
+            padding: 0.5em 4em 0.5em 2em;
+        }
+        
+        .pseudo:valid {
+            border-color: forestgreen;
+        }
+        
+        .pseudo:valid+.icon::after {
+            content: '✔';
+            color: green;
+        }
+        
+        .pseudo:invalid {
+            border-color: firebrick;
+        }
+        
+        .pseudo:invalid+.icon::after {
+            content: '❌';
+        }
+    </style>
+
+    <meta charset="utf-8" />
+    <title>Menu Pendu</title>
+</head>
+
+<body class="align">
+    <h1>Bienvenue à vous !!!</h1>
+    <form action="Pendu.html" method="get">
+        <label>Entrez votre Pseudo</label></br>
+        <div class="champs">
+            <input type="text" class="pseudo" id="user_name" name="user_name" required minlength="3" maxlength="12" />
+            <span class="icon"></span>
+        </div>
+        <br>
+        <button type="submit" id="commencer">Commencer à jouer</button>
+        <p id="erreur"></p>
+    </form>
+    <script>
+        var user_name = false;
+
+        document.querySelector("#commencer").style.display = "none";
+        document.querySelector(".icon").style.display = "none";
+
+        function check() {
+            console.log(document.querySelector('#user_name').value.length)
+            if (document.querySelector('#user_name').value.length > 0) {
+                document.querySelector(".icon").style.display = "flex";
+            } else {
+                document.querySelector(".icon").style.display = "none";
+            }
+
+
+
+            if (user_name !== false && user_name !== "") {
+                document.querySelector("#commencer").style.display = "inline";
+            } else {
+                document.querySelector("#commencer").style.display = "none";
+                document.querySelector("#erreur").style.display = "block";
+
+            }
+        }
+        document.querySelector('#user_name').addEventListener("input", function() {
+            user_name = document.querySelector('#user_name').value;
+            check();
+
+        })
+    </script>
+
+</body>
+
+</html>
